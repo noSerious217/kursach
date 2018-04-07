@@ -1,16 +1,17 @@
 package DAO;
 
+import Entity.Book_Author;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 
 public class Book_AuthorDAO {
 
     private Connection connection;
-    private PreparedStatement preparedStatement;
-    public ResultSet SelectResult;
-    public Exception Exception;
+    public static Exception Exception;
 
     public Book_AuthorDAO() throws SQLException {
         if (!Core.ConnectionManager.Connected()) throw new SQLException();
@@ -40,15 +41,45 @@ public class Book_AuthorDAO {
         }
     }
 
-    public Core.Result Select(int id, boolean a)
+    public LinkedList<Book_Author> Select(int id, boolean a)
     {
         try {
             String prepare;
             if (a) prepare="SELECT * FROM BOOKS_AUTHORS WHERE A_ID=?";
                     else prepare="SELECT * FROM BOOKS_AUTHORS WHERE B_ID=?";
-            preparedStatement = connection.prepareStatement(prepare);
+            PreparedStatement preparedStatement = connection.prepareStatement(prepare);
             ResultSet resultSet = preparedStatement.executeQuery();
-            SelectResult = resultSet;
+            LinkedList<Book_Author> linkedList = new LinkedList<Book_Author>();
+            while (resultSet.next())
+            {
+                Book_Author book_author = new Book_Author();
+                book_author.setA_id(resultSet.getInt(1));
+                book_author.setB_id(resultSet.getInt(2));
+                linkedList.add(book_author);
+            }
+            return linkedList;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return null;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return null;
+        }
+    }
+
+    public Core.Result Delete(int a_id, int b_id)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM BOOKS_AUTHORS WHERE A_ID = ? AND B_ID = ?");
+            preparedStatement.setInt(1,a_id);
+            preparedStatement.setInt(2,b_id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
             return Core.Result.SUCCESS;
         }
         catch (SQLException e)

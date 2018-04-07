@@ -1,13 +1,16 @@
 package DAO;
 
+import Core.City;
+import Entity.Edition;
+import Entity.Publisher;
+
 import java.sql.*;
+import java.util.LinkedList;
 
 public class PublisherDAO {
 
     private Connection connection;
-    private PreparedStatement preparedStatement;
-    public ResultSet SelectResult;
-    public Exception Exception;
+    public static Exception Exception;
 
     public PublisherDAO() throws SQLException {
         if (!Core.ConnectionManager.Connected()) throw new SQLException();
@@ -23,10 +26,10 @@ public class PublisherDAO {
             int id=0;
             if (resultSet.next()) id = resultSet.getInt(1)+1;
             statement.close();
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO PUBLISHER VALUES (?,?,?)");
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO PUBLISHERS VALUES (?,?,?)");
             preparedStatement.setInt(1,id);
             preparedStatement.setString(2,name);
-            preparedStatement.setString(3, Core.City.GetName(code));
+            preparedStatement.setString(3, code.toString());
             preparedStatement.executeUpdate();
             preparedStatement.close();
             return Core.Result.SUCCESS;
@@ -39,6 +42,54 @@ public class PublisherDAO {
         catch (Exception e)
         {
             Exception = e;
+            return Core.Result.EXCEPTION;
+        }
+    }
+
+    public Core.Result Insert(Integer id, String name, Core.City.Code code)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO PUBLISHERS VALUES (?,?,?)");
+            preparedStatement.setInt(1,id);
+            preparedStatement.setString(2,name);
+            preparedStatement.setString(3, code.toString());
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return Core.Result.SUCCESS;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return Core.Result.SQLEXCEPTION;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return Core.Result.EXCEPTION;
+        }
+    }
+
+    public Core.Result Update(int id, String name, City.Code code)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE PUBLISHERS SET NAME = ?, CITY = ? WHERE ID = ?");
+            preparedStatement.setString(1,name);
+            preparedStatement.setString(2,code.toString());
+            preparedStatement.setInt(3,id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return Core.Result.SUCCESS;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return Core.Result.SQLEXCEPTION;
+        }
+        catch (Exception e)
+        {
+            Exception=e;
             return Core.Result.EXCEPTION;
         }
     }
@@ -47,7 +98,7 @@ public class PublisherDAO {
     {
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM PUBLISHER WHERE ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM PUBLISHERS WHERE ID = ?");
             preparedStatement.setInt(1,id);
             preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -65,48 +116,94 @@ public class PublisherDAO {
         }
     }
 
-    public Core.Result Select(String mask)
+    public LinkedList<Publisher> Select(String mask)
     {
         try
         {
             mask = '%' + mask + '%';
-            preparedStatement = connection.prepareStatement("SELECT * FROM PUBLISHER WHERE NAME LIKE ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM PUBLISHERS WHERE NAME LIKE ?");
             preparedStatement.setString(1,mask);
             ResultSet resultSet = preparedStatement.executeQuery();
-            SelectResult = resultSet;
-            return Core.Result.SUCCESS;
+            LinkedList<Publisher> linkedList = new LinkedList<Publisher>();
+            while (resultSet.next())
+            {
+                Publisher Publisher = new Publisher();
+                Publisher.setId(resultSet.getInt(1));
+                Publisher.setName(resultSet.getString(2));
+                Publisher.setCity(City.GetName(resultSet.getString(3)));
+                linkedList.add(Publisher);
+            }
+            return linkedList;
         }
         catch (SQLException e)
         {
             Exception = e;
-            return Core.Result.SQLEXCEPTION;
+            return null;
         }
         catch (Exception e)
         {
             Exception = e;
-            return Core.Result.EXCEPTION;
+            return null;
         }
     }
 
-    public Core.Result Select(Core.City.Code code)
+    public LinkedList<Publisher> Select(Core.City.Code code)
     {
         try
         {
-            preparedStatement = connection.prepareStatement("SELECT * FROM PUBLISHER WHERE CITY = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM PUBLISHERS WHERE CITY = ?");
             preparedStatement.setString(1,code.toString());
             ResultSet resultSet = preparedStatement.executeQuery();
-            SelectResult = resultSet;
-            return Core.Result.SUCCESS;
+            LinkedList<Publisher> linkedList = new LinkedList<Publisher>();
+            while (resultSet.next())
+            {
+                Publisher Publisher = new Publisher();
+                Publisher.setId(resultSet.getInt(1));
+                Publisher.setName(resultSet.getString(2));
+                Publisher.setCity(City.GetName(resultSet.getString(3)));
+                linkedList.add(Publisher);
+            }
+            return linkedList;
         }
         catch (SQLException e)
         {
             Exception = e;
-            return Core.Result.SQLEXCEPTION;
+            return null;
         }
         catch (Exception e)
         {
             Exception = e;
-            return Core.Result.EXCEPTION;
+            return null;
+        }
+    }
+
+    public Publisher Select(Integer id)
+    {
+        try
+        {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM PUBLISHERS WHERE ID = ?");
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next())
+            {
+                Publisher Publisher = new Publisher();
+                Publisher.setId(resultSet.getInt(1));
+                Publisher.setName(resultSet.getString(2));
+                Publisher.setCity(City.GetName(resultSet.getString(3)));
+                return Publisher;
+            }
+            Exception = null;
+            return null;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return null;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return null;
         }
     }
 }

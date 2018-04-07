@@ -1,15 +1,15 @@
 package DAO;
 
 import Core.Result;
+import Entity.Author;
 
 import java.sql.*;
+import java.util.LinkedList;
 
 public class AuthorDAO {
 
     private Connection connection;
-    private PreparedStatement preparedStatement;
-    public ResultSet SelectResult;
-    public Exception Exception;
+    public static Exception Exception;
 
     public AuthorDAO() throws SQLException {
         if (!Core.ConnectionManager.Connected()) throw new SQLException();
@@ -21,7 +21,6 @@ public class AuthorDAO {
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT MAX(ID) FROM AUTHORS");
-            resultSet.next();
             int id=0;
             if (resultSet.next()) id = resultSet.getInt(1)+1;
             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO AUTHORS VALUES (?,?)");
@@ -111,44 +110,57 @@ public class AuthorDAO {
         }
     }
 
-    public Core.Result Select(String mask) {
+    public LinkedList<Author> Select(String mask) {
         mask = '%'+mask+'%';
         try {
-            preparedStatement = connection.prepareStatement("SELECT * FROM AUTHORS WHERE NAME LIKE ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM AUTHORS WHERE NAME LIKE ?");
             preparedStatement.setString(1, mask);
             ResultSet res = preparedStatement.executeQuery();
-            SelectResult=res;
-            return Core.Result.SUCCESS;
+            LinkedList<Author> linkedList = new LinkedList<Author>();
+            while (res.next())
+            {
+                Author author = new Author();
+                author.setId(res.getInt(1));
+                author.setName(res.getString(2));
+                linkedList.add(author);
+            }
+            return linkedList;
         }
         catch (SQLException e)
         {
             Exception=e;
-            return Core.Result.SQLEXCEPTION;
+            return null;
         }
         catch (Exception e)
         {
             Exception=e;
-            return Core.Result.EXCEPTION;
+            return null;
         }
     }
 
-    public Core.Result Select(int id) {
+    public Author Select(int id) {
         try {
-            preparedStatement = connection.prepareStatement("SELECT * FROM AUTHORS WHERE ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM AUTHORS WHERE ID = ?");
             preparedStatement.setInt(1, id);
             ResultSet res = preparedStatement.executeQuery();
-            SelectResult=res;
-            return Core.Result.SUCCESS;
+            if (res.next()) {
+                Author author = new Author();
+                author.setId(res.getInt(1));
+                author.setName(res.getString(2));
+                return author;
+            }
+            Exception = null;
+            return null;
         }
         catch (SQLException e)
         {
             Exception=e;
-            return Core.Result.SQLEXCEPTION;
+            return null;
         }
         catch (Exception e)
         {
             Exception=e;
-            return Core.Result.EXCEPTION;
+            return null;
         }
     }
 }

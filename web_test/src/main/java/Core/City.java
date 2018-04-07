@@ -22,6 +22,17 @@ public class City {
         return null;
     }
 
+    public static String GetName(String name)
+    {
+
+        if (name.toLowerCase().equals("москва")) return "MOW";
+        if (name.toLowerCase().equals("санкт-петербург")) return "SPB";
+        if (name.toLowerCase().equals("оренбург")) return "ORE";
+        if (name.toLowerCase().equals("самара")) return "SAM";
+        return null;
+    }
+
+
     public static Code GetCode(String name)
     {
         if (name.toLowerCase().equals("москва")) return Code.MOW;

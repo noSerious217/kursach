@@ -11,6 +11,7 @@ public class ConnectionManager {
     private static String login;
     private static String password;
     private static boolean connected;
+    private static Connection connection = null;
 
     public static void setAttributes(String db, String name, String pass)
     {
@@ -21,6 +22,7 @@ public class ConnectionManager {
         {
             Connection c = DriverManager.getConnection("jdbc:postgresql:"+dbname,login,password);
             connected=true;
+            c.close();
         }
         catch (Exception e)
         {
@@ -29,12 +31,16 @@ public class ConnectionManager {
     }
 
     public static Connection getConnection() throws SQLException {
-        Connection c = DriverManager.getConnection("jdbc:postgresql:"+dbname,login,password);
-        return c;
+        if (connection==null) connection = DriverManager.getConnection("jdbc:postgresql:"+dbname,login,password);
+        return connection;
     }
 
     public static boolean Connected()
     {
         return connected;
+    }
+
+    public static void Close() throws SQLException {
+        connection.close();
     }
 }
