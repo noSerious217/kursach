@@ -42,11 +42,11 @@ public class PublisherController {
         }
     }
 
-    public static Core.Result delete(Publisher Publisher)
+    public static Core.Result delete(int id)
     {
         try
         {
-            return new PublisherDAO().Delete(Publisher.getId());
+            return new PublisherDAO().Delete(id);
         }
         catch (SQLException e)
         {
@@ -68,5 +68,13 @@ public class PublisherController {
 
     public static LinkedList<Publisher> select(City.Code city) throws SQLException {
         return new PublisherDAO().Select(city);
+    }
+
+    public static LinkedList<Publisher> select(String mask, City.Code city) throws SQLException {
+        return new PublisherDAO().Select(mask,city);
+    }
+
+    public static int getMaxID() throws SQLException {
+        return new PublisherDAO().getMaxID();
     }
 }

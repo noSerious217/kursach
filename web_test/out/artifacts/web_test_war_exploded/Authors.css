@@ -1,0 +1,147 @@
+*   {
+    font-family: "Constantia";
+}
+
+table   {
+    border-collapse: collapse;
+    width: 100%;
+    alignment: center;
+}
+
+.table   {
+    font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+    border-collapse: collapse;
+    color:  #686461;
+    width:  90%;
+}
+
+.th  {
+    border-bottom: 3px solid #B9B29F;
+    padding: 10px;
+    text-align: left;
+}
+
+.td  {
+    padding: 10px;
+    text-align: left;
+}
+
+.tr:nth-child(odd)   {
+    background: white;
+}
+
+.tr:nth-child(even)  {
+    background: #ffbf94;
+}
+
+a{
+    display: inline-block;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 15px 25px;
+    padding: 15px 20px;
+    font-size: 20px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+    transition: 0.4s ease-in-out;
+    border-radius: 10px;
+}
+
+a:hover {
+    color: white;
+}
+
+.authors {
+    color: #ff4f00;
+    box-shadow: inset 0 -5px 0 #ff4f00;
+}
+.authors:hover {
+    box-shadow: inset 0 -60px 0 #ff4f00, 2px 2px 3px rgba(0,0,0,0.3);
+}
+
+.book   {
+    color: #0000ff;
+    box-shadow: inset 0 -5px 0 #0000ff;
+}
+.book:hover {
+    box-shadow: inset 0 -60px 0 #0000ff, 2px 2px 3px rgba(0,0,0,0.3);
+}
+
+.ba   {
+    color: #1d7a1d;
+    box-shadow: inset 0 -5px 0 #1d7a1d;
+}
+.ba:hover {
+    box-shadow: inset 0 -60px 0 #1d7a1d, 2px 2px 3px rgba(0,0,0,0.3);
+}
+
+.publisher   {
+    color: #6600FF;
+    box-shadow: inset 0 -5px 0 #6600FF;
+}
+.publisher:hover {
+    box-shadow: inset 0 -60px 0 #6600FF, 2px 2px 3px rgba(0,0,0,0.3);
+}
+
+.edition   {
+    color: #FF0099;
+    box-shadow: inset 0 -5px 0 #FF0099;
+}
+.edition:hover {
+    box-shadow: inset 0 -60px 0 #FF0099, 2px 2px 3px rgba(0,0,0,0.3);
+}
+
+input[type=text] {
+    width: 300px;
+    font-size: 15px;
+    padding: 6px 0 4px 10px;
+    border: 1px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 8px;
+}
+
+input[type=number] {
+    width: 300px;
+    font-size: 15px;
+    padding: 6px 0 4px 10px;
+    border: 1px solid #cecece;
+    background: #F6F6f6;
+    border-radius: 8px;
+}
+
+.check input[type=checkbox] {
+    position: absolute;
+    left: -10000px;
+}
+.check {
+    background-position: 0 3px;
+    padding-left: 25px;
+    cursor: pointer;
+    position: relative;
+}
+.check.active {
+    background-position: 0 -27px;
+}
+
+input[type=submit] {
+    cursor: pointer;
+    border: 1px solid #cecece;
+    background: #f6f6f6;
+    box-shadow: inset 0px 20px 20px #ffffff;
+    border-radius: 8px;
+    padding: 8px 14px;
+    width: 120px;
+}
+input[type=submit]:hover {
+    box-shadow: inset 0px -20px 20px #ffffff;
+}
+input[type=submit]:active {
+    margin-top: 1px;
+    margin-bottom: -1px;
+    zoom: 1;
+}
+
+.head   {
+    background: #ffbf94;
+}

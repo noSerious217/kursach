@@ -29,16 +29,20 @@ public class City {
         if (name.toLowerCase().equals("санкт-петербург")) return "SPB";
         if (name.toLowerCase().equals("оренбург")) return "ORE";
         if (name.toLowerCase().equals("самара")) return "SAM";
+        if (name.toLowerCase().equals("mow")) return "Москва";
+        if (name.toLowerCase().equals("spb")) return "Санкт-Петербург";
+        if (name.toLowerCase().equals("ore")) return "Оренбург";
+        if (name.toLowerCase().equals("sam")) return "Самара";
         return null;
     }
 
 
     public static Code GetCode(String name)
     {
-        if (name.toLowerCase().equals("москва")) return Code.MOW;
-        if (name.toLowerCase().equals("санкт-петербург")) return Code.SPB;
-        if (name.toLowerCase().equals("оренбург")) return Code.ORE;
-        if (name.toLowerCase().equals("самара")) return Code.SAM;
+        if (name.toLowerCase().equals("москва")||name.toLowerCase().equals("mow")) return Code.MOW;
+        if (name.toLowerCase().equals("санкт-петербург")||name.toLowerCase().equals("spb")) return Code.SPB;
+        if (name.toLowerCase().equals("оренбург")||name.toLowerCase().equals("ore")) return Code.ORE;
+        if (name.toLowerCase().equals("самара")||name.toLowerCase().equals("sam")) return Code.SAM;
         return null;
     }
 }

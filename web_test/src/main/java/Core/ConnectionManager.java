@@ -13,6 +13,11 @@ public class ConnectionManager {
     private static boolean connected;
     private static Connection connection = null;
 
+    public static void init()
+    {
+        setAttributes("web","postgres","123456");
+    }
+
     public static void setAttributes(String db, String name, String pass)
     {
         dbname = db;
@@ -20,9 +25,8 @@ public class ConnectionManager {
         password = pass;
         try
         {
-            Connection c = DriverManager.getConnection("jdbc:postgresql:"+dbname,login,password);
+            connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+dbname,login,password);
             connected=true;
-            c.close();
         }
         catch (Exception e)
         {
@@ -31,7 +35,7 @@ public class ConnectionManager {
     }
 
     public static Connection getConnection() throws SQLException {
-        if (connection==null) connection = DriverManager.getConnection("jdbc:postgresql:"+dbname,login,password);
+        if (connection==null) connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/"+dbname,login,password);
         return connection;
     }
 

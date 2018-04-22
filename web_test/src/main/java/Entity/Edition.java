@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class Edition {
+public class Edition implements Comparable<Edition>{
     private Integer id = 0;
     private Integer b_id;
     private Integer p_id;
@@ -88,4 +88,9 @@ public class Edition {
         return Result.SUCCESS;
     }
 
+    @Override
+    public int compareTo(Edition o) {
+        if (b_id-o.b_id==0) return id-o.id;
+        return b_id-o.b_id;
+    }
 }

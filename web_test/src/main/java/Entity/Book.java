@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class Book {
+public class Book implements Comparable<Book>{
     private Integer id = 0;
     private String name;
     private String genre;
@@ -28,7 +28,7 @@ public class Book {
     }
 
     public Result setName(String name) {
-        if (name.length()==0||name.length()>40) return Result.WRONGATTRIBUTES;
+        if (name.length()==0||name.length()>80) return Result.WRONGATTRIBUTES;
         this.name = name;
         return Result.SUCCESS;
     }
@@ -55,4 +55,8 @@ public class Book {
         return Result.SUCCESS;
     }
 
+    @Override
+    public int compareTo(Book o) {
+        return id-o.id;
+    }
 }

@@ -16,6 +16,27 @@ public class AuthorDAO {
         connection = Core.ConnectionManager.getConnection();
     }
 
+    public int getMaxID()
+    {
+        try
+        {
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT MAX(ID) FROM AUTHORS");
+        resultSet.next();
+        return resultSet.getInt(1);
+        }
+        catch (SQLException e)
+        {
+            Exception=e;
+            return 0;
+        }
+        catch (Exception e)
+        {
+            Exception=e;
+            return 0;
+        }
+    }
+
     public Core.Result Insert(String name)
     {
         try {
@@ -124,6 +145,7 @@ public class AuthorDAO {
                 author.setName(res.getString(2));
                 linkedList.add(author);
             }
+            preparedStatement.close();
             return linkedList;
         }
         catch (SQLException e)

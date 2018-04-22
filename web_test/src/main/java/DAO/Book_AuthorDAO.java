@@ -2,10 +2,7 @@ package DAO;
 
 import Entity.Book_Author;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.LinkedList;
 
 public class Book_AuthorDAO {
@@ -48,7 +45,35 @@ public class Book_AuthorDAO {
             if (a) prepare="SELECT * FROM BOOKS_AUTHORS WHERE A_ID=?";
                     else prepare="SELECT * FROM BOOKS_AUTHORS WHERE B_ID=?";
             PreparedStatement preparedStatement = connection.prepareStatement(prepare);
+            preparedStatement.setInt(1,id);
             ResultSet resultSet = preparedStatement.executeQuery();
+            LinkedList<Book_Author> linkedList = new LinkedList<Book_Author>();
+            while (resultSet.next())
+            {
+                Book_Author book_author = new Book_Author();
+                book_author.setA_id(resultSet.getInt(1));
+                book_author.setB_id(resultSet.getInt(2));
+                linkedList.add(book_author);
+            }
+            return linkedList;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return null;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return null;
+        }
+    }
+
+    public LinkedList<Book_Author> Select()
+    {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet =  statement.executeQuery("SELECT * FROM BOOKS_AUTHORS");
             LinkedList<Book_Author> linkedList = new LinkedList<Book_Author>();
             while (resultSet.next())
             {

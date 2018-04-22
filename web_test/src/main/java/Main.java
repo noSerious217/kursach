@@ -17,11 +17,14 @@ import Entity.Publisher;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Main{
     public static void main(String[] args) throws SQLException {
         Core.ConnectionManager.setAttributes("web","postgres","123456");
-
+        Author author = new Author();
+        author.setName("Говард Филлипс Лавкрафт");
+        System.out.println(AuthorController.add(author));
         ConnectionManager.Close();
     }
 }

@@ -57,11 +57,31 @@ public class AuthorController {
         }
     }
 
+    public static Core.Result delete(int id)
+    {
+        try
+        {
+            return new AuthorDAO().Delete(id);
+        }
+        catch (SQLException e)
+        {
+            return Result.SQLEXCEPTION;
+        }
+        catch (Exception e)
+        {
+            return Result.EXCEPTION;
+        }
+    }
+
     public static Author select(Integer id) throws SQLException {
         return new AuthorDAO().Select(id);
     }
 
     public static LinkedList<Author> select(String mask) throws SQLException {
         return new AuthorDAO().Select(mask);
+    }
+
+    public static int getMaxID() throws SQLException {
+        return new AuthorDAO().getMaxID();
     }
 }

@@ -75,14 +75,21 @@ public class EditionDAO {
         }
     }
 
-    public Core.Result Update(int e_id, int b_id, int copies)
+    public Core.Result Update(int e_id, int b_id, int newb_id, int p_id, int pages, int copies, String ISBN, int year)
     {
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE EDITIONS SET COPIES = ? WHERE id = ? and b_id = ?");
-            preparedStatement.setInt(1,copies);
-            preparedStatement.setInt(2,e_id);
-            preparedStatement.setInt(3,b_id);
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE EDITIONS SET b_id = ?, COPIES = ?, P_ID=?, PAGES=?, ISBN=?, YEAR=? WHERE id = ? and b_id = ?");
+            preparedStatement.setInt(1,newb_id);
+            preparedStatement.setInt(2,copies);
+            preparedStatement.setInt(3,p_id);
+            preparedStatement.setInt(4,pages);
+            preparedStatement.setString(5,ISBN);
+            preparedStatement.setInt(6,year);
+            preparedStatement.setInt(7,e_id);
+            preparedStatement.setInt(8,b_id);
+            preparedStatement.executeUpdate();
+            preparedStatement.close();
             return Core.Result.SUCCESS;
         }
         catch (SQLException e)
@@ -97,12 +104,13 @@ public class EditionDAO {
         }
     }
 
-    public Edition Select(Integer id)
+    public Edition Select(Integer id, Integer b_id)
     {
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM EDITION WHERE ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM EDITIONS WHERE ID = ? AND B_ID=?");
             preparedStatement.setInt(1,id);
+            preparedStatement.setInt(2,b_id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next())
             {
@@ -135,7 +143,7 @@ public class EditionDAO {
     {
         try
         {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM EDITION WHERE B_ID = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM EDITIONS WHERE B_ID = ?");
             preparedStatement.setInt(1,b_id);
             ResultSet resultSet = preparedStatement.executeQuery();
             LinkedList<Edition> linkedList = new LinkedList<Edition>();
@@ -162,6 +170,60 @@ public class EditionDAO {
         {
             Exception = e;
             return null;
+        }
+    }
+
+    public LinkedList<Edition> Select()
+    {
+        try
+        {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet =  statement.executeQuery("SELECT * FROM EDITIONS");
+            LinkedList<Edition> linkedList = new LinkedList<Edition>();
+            while (resultSet.next())
+            {
+                Edition Edition = new Edition();
+                Edition.setId(resultSet.getInt(1));
+                Edition.setB_id(resultSet.getInt(2));
+                Edition.setP_id(resultSet.getInt(3));
+                Edition.setPages(resultSet.getInt(4));
+                Edition.setCopies(resultSet.getInt(5));
+                Edition.setISBN(resultSet.getString(6));
+                Edition.setYear(resultSet.getInt(7));
+                linkedList.add(Edition);
+            }
+            return linkedList;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return null;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return null;
+        }
+    }
+
+    public int getMaxID()
+    {
+        try
+        {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet =  statement.executeQuery("SELECT MAX(ID) FROM EDITIONS");
+            resultSet.next();
+            return resultSet.getInt(1);
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return 0;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return 0;
         }
     }
 }

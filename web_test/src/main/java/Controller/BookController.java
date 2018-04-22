@@ -57,11 +57,32 @@ public class BookController {
         }
     }
 
+    public static Core.Result delete(int id)
+    {
+        try
+        {
+            return new BookDAO().Delete(id);
+        }
+        catch (SQLException e)
+        {
+            return Result.SQLEXCEPTION;
+        }
+        catch (Exception e)
+        {
+            return Result.EXCEPTION;
+        }
+    }
+
+
     public static Book select(Integer id) throws SQLException {
         return new BookDAO().Select(id);
     }
 
     public static LinkedList<Book> select(String mask) throws SQLException {
         return new BookDAO().Select(mask);
+    }
+
+    public static int getMaxID() throws SQLException {
+        return new BookDAO().getMaxID();
     }
 }

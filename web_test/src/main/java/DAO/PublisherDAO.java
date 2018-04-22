@@ -147,6 +147,39 @@ public class PublisherDAO {
         }
     }
 
+    public LinkedList<Publisher> Select(String mask, City.Code code)
+    {
+        try
+        {
+            mask = '%' + mask + '%';
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM PUBLISHERS WHERE NAME LIKE ? AND CITY = ?");
+            preparedStatement.setString(1,mask);
+            preparedStatement.setString(2,code.toString());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            LinkedList<Publisher> linkedList = new LinkedList<Publisher>();
+            while (resultSet.next())
+            {
+                Publisher Publisher = new Publisher();
+                Publisher.setId(resultSet.getInt(1));
+                Publisher.setName(resultSet.getString(2));
+                Publisher.setCity(City.GetName(resultSet.getString(3)));
+                linkedList.add(Publisher);
+            }
+            return linkedList;
+        }
+        catch (SQLException e)
+        {
+            Exception = e;
+            return null;
+        }
+        catch (Exception e)
+        {
+            Exception = e;
+            return null;
+        }
+    }
+
+
     public LinkedList<Publisher> Select(Core.City.Code code)
     {
         try
@@ -204,6 +237,27 @@ public class PublisherDAO {
         {
             Exception = e;
             return null;
+        }
+    }
+
+    public int getMaxID()
+    {
+        try
+        {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT MAX(ID) FROM PUBLISHERS");
+            resultSet.next();
+            return resultSet.getInt(1);
+        }
+        catch (SQLException e)
+        {
+            Exception=e;
+            return 0;
+        }
+        catch (Exception e)
+        {
+            Exception=e;
+            return 0;
         }
     }
 }

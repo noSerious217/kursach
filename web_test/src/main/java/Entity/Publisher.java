@@ -3,7 +3,7 @@ package Entity;
 import Core.City;
 import Core.Result;
 
-public class Publisher {
+public class Publisher implements Comparable<Publisher>{
     private Integer id = 0;
     private String name;
     private String city;
@@ -38,4 +38,8 @@ public class Publisher {
         return Result.SUCCESS;
     }
 
+    @Override
+    public int compareTo(Publisher o) {
+        return id-o.id;
+    }
 }

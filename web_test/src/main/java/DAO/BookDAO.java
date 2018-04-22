@@ -178,4 +178,25 @@ public class BookDAO {
             return null;
         }
     }
+
+    public int getMaxID()
+    {
+        try
+        {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT MAX(ID) FROM BOOKS");
+            resultSet.next();
+            return resultSet.getInt(1);
+        }
+        catch (SQLException e)
+        {
+            Exception=e;
+            return 0;
+        }
+        catch (Exception e)
+        {
+            Exception=e;
+            return 0;
+        }
+    }
 }

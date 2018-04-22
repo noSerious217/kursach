@@ -2,7 +2,7 @@ package Entity;
 
 import Core.Result;
 
-public class Author {
+public class Author implements Comparable<Author> {
     private Integer id=0;
     private String name;
 
@@ -24,5 +24,9 @@ public class Author {
         if (name.length()==0||name.length()>100) return Result.WRONGATTRIBUTES;
         this.name = name;
         return Result.SUCCESS;
+    }
+
+    public int compareTo(Author o) {
+        return id-o.id;
     }
 }
